@@ -1,91 +1,10 @@
-/* Task Container */
-.task-container {
-    border: 1px solid #d1d9e6;
-    border-radius: 8px;
-    padding: 16px;
-    margin: 8px 0;
-    background-color: #ffffff;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .task-container:hover {
-    transform: translateY(-4px);
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Task Title */
-  .task-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 0.5rem;
-  }
-  
-  /* Task Description */
-  .task-description {
-    font-size: 0.95rem;
-    color: #666;
-    margin-bottom: 1rem;
-  }
-  
-  /* Due Date */
-  .task-due-date {
-    font-size: 0.85rem;
-    color: #999;
-    margin-bottom: 1rem;
-  }
-  
-  /* Label Color Indicator */
-  .task-label {
-    width: 10px;
-    height: 100%;
-    background-color: var(--task-label-color);
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-  }
-  
-  /* Buttons */
-  .task-button {
-    padding: 6px 12px;
-    font-size: 0.85rem;
-    font-weight: bold;
-    color: #ffffff;
-    background-color: #4a90e2;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .task-button.delete {
-    background-color: #e53935;
-  }
-  
-  .task-button.delete:hover {
-    background-color: #c62828;
-  }
-  
-  .task-button.complete {
-    background-color: #4caf50;
-    margin-left: 8px;
-  }
-  
-  .task-button.complete:hover {
-    background-color: #388e3c;
-  }
-  
-  /* Completion Indicator */
-  .task-completed-indicator {
-    width: 100%;
-    height: 5px;
-    background-color: #4caf50;
-    margin-top: 10px;
-    border-radius: 3px;
-  }
-  
+.task {
+  padding: 0.5rem;
+  background-color: #e9e9e9;
+  border-radius: 4px;
+  margin-bottom: 0.3rem;
+}
+.task.completed {
+  text-decoration: line-through;
+  color: gray;
+}
