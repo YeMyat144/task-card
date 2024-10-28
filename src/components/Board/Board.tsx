@@ -16,12 +16,13 @@ const Board: React.FC<BoardProps> = ({ columns, setColumns }) => {
       const newColumn: ColumnType = {
         id: Date.now().toString(),
         title: newColumnName,
-        cards: [],
+        cards: [], // Initialize cards as an empty array
       };
       setColumns([...columns, newColumn]);
       setNewColumnName('');
     }
   };
+  
 
   return (
     <div className="board">

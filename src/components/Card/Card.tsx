@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import Task from '../Task/Task';
-import { Card as CardType, Task as TaskType, Column as ColumnType } from '../../types';
-import './Card.css';
+import { Card as CardType, Column as ColumnType, Task as TaskType } from '../../types';
+import './card.css';
 
 type CardProps = {
   card: CardType;
@@ -11,19 +10,23 @@ type CardProps = {
 };
 
 const Card: React.FC<CardProps> = ({ card, columnId, columns, setColumns }) => {
-  const [isAddingTask, setIsAddingTask] = useState(false);
+  const [showTaskForm, setShowTaskForm] = useState(false);
   const [taskTitle, setTaskTitle] = useState('');
-
-  const completedTasksCount = card.tasks.filter((task) => task.completed).length;
-  const incompleteTasksCount = card.tasks.length - completedTasksCount;
+  const [taskDescription, setTaskDescription] = useState('');
+  const [taskDueDate, setTaskDueDate] = useState('');
+  const [taskLabel, setTaskLabel] = useState('#ffffff'); // Default to white
 
   const addTask = () => {
     if (taskTitle.trim()) {
       const newTask: TaskType = {
         id: Date.now().toString(),
         title: taskTitle,
+        description: taskDescription,
+        dueDate: taskDueDate,
+        label: taskLabel,
         completed: false,
       };
+
       const updatedColumns = columns.map((col) =>
         col.id === columnId
           ? {
@@ -34,33 +37,121 @@ const Card: React.FC<CardProps> = ({ card, columnId, columns, setColumns }) => {
             }
           : col
       );
+
       setColumns(updatedColumns);
-      setTaskTitle('');
-      setIsAddingTask(false);
+      resetTaskForm();
     }
   };
 
+  const resetTaskForm = () => {
+    setTaskTitle('');
+    setTaskDescription('');
+    setTaskDueDate('');
+    setTaskLabel('#ffffff');
+    setShowTaskForm(false);
+  };
+
+  const deleteCard = () => {
+    const updatedColumns = columns.map((col) =>
+      col.id === columnId
+        ? { ...col, cards: col.cards.filter(c => c.id !== card.id) }
+        : col
+    );
+
+    setColumns(updatedColumns);
+  };
+
+  const deleteTask = (taskId: string) => {
+    const updatedColumns = columns.map((col) =>
+      col.id === columnId
+        ? {
+            ...col,
+            cards: col.cards.map(c =>
+              c.id === card.id
+                ? { ...c, tasks: c.tasks.filter(task => task.id !== taskId) }
+                : c
+            ),
+          }
+        : col
+    );
+
+    setColumns(updatedColumns);
+  };
+
+  const completedTasks = card.tasks.filter((task) => task.completed).length;
+
   return (
     <div className="card">
-      <h3>{card.title}</h3>
-      <p>Complete: {completedTasksCount} / Incomplete: {incompleteTasksCount}</p>
-      <button onClick={() => setIsAddingTask((prev) => !prev)}>☰</button>
+      <div className="card-header">
+        <span className="label" style={{ backgroundColor: card.label }}>{card.label}</span>
+        <h3>{card.title}</h3>
+        <button onClick={deleteCard} style={{ marginLeft: '10px', color: 'red' }}>Delete Card</button>
+        <button onClick={() => setShowTaskForm(!showTaskForm)} className="menu-icon">☰</button>
+      </div>
+      <p>{completedTasks} / {card.tasks.length} Tasks Completed</p>
 
-      {isAddingTask && (
+      {showTaskForm && (
         <div className="task-form">
           <input
             type="text"
             value={taskTitle}
             onChange={(e) => setTaskTitle(e.target.value)}
-            placeholder="Task title"
+            placeholder="Task Title"
+          />
+          <textarea
+            value={taskDescription}
+            onChange={(e) => setTaskDescription(e.target.value)}
+            placeholder="Description"
+          />
+          <input
+            type="date"
+            value={taskDueDate}
+            onChange={(e) => setTaskDueDate(e.target.value)}
+          />
+          <input
+            type="color"
+            value={taskLabel}
+            onChange={(e) => setTaskLabel(e.target.value)}
+            title="Task Label Color"
           />
           <button onClick={addTask}>Add Task</button>
+          <button onClick={resetTaskForm}>Cancel</button>
         </div>
       )}
-
+      
       <div className="tasks-container">
         {card.tasks.map((task) => (
-          <Task key={task.id} task={task} />
+          <div key={task.id} className="task">
+            <input
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => {
+                // Toggle completion
+                const updatedColumns = columns.map((col) =>
+                  col.id === columnId
+                    ? {
+                        ...col,
+                        cards: col.cards.map((c) =>
+                          c.id === card.id
+                            ? {
+                                ...c,
+                                tasks: c.tasks.map((t) =>
+                                  t.id === task.id ? { ...t, completed: !t.completed } : t
+                                ),
+                              }
+                            : c
+                        ),
+                      }
+                    : col
+                );
+                setColumns(updatedColumns);
+              }}
+            />
+            <span style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>{task.title}</span>
+            <p>{task.description}</p>
+            <p>Due: {task.dueDate}</p>
+            <button onClick={() => deleteTask(task.id)} style={{ color: 'red' }}>Delete Task</button>
+          </div>
         ))}
       </div>
     </div>
