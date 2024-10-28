@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import Column from './Column';
-import { Column as ColumnType } from '../types';
+import Column from '../Column/Column';
+import { Column as ColumnType } from '../../types';
+import "./Board.css";
 
 type BoardProps = {
   columns: ColumnType[];
@@ -34,29 +35,36 @@ const Board: React.FC<BoardProps> = ({ columns, setColumns }) => {
   }));
 
   return (
-    <div>
+    <div className="board-container">
       <input
         type="text"
+        className="board-input"
         value={newColumnName}
         onChange={(e) => setNewColumnName(e.target.value)}
         placeholder="Column name"
       />
-      <button onClick={addColumn}>Add Column</button>
+      <button className="board-button" onClick={addColumn}>Add Column</button>
 
       <input
         type="text"
+        className="board-input"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Search tasks"
       />
-      <button onClick={() => { setFilterColor(''); setSearchTerm(''); }}>Clear Filters</button>
+      <button className="board-button clear-button" onClick={() => { setFilterColor(''); setSearchTerm(''); }}>
+       Clear Filters
+      </button>
 
-      <div style={{ display: 'flex', gap: '1rem' }}>
+      <div className="columns-container">
         {filteredColumns.map((column) => (
-          <Column key={column.id} column={column} setColumns={setColumns} columns={columns} />
+          <div className="column-card" key={column.id}>
+            <Column column={column} setColumns={setColumns} columns={columns} />
+          </div>
         ))}
       </div>
     </div>
+
   );
 };
 
