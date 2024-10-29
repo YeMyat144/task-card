@@ -1,16 +1,8 @@
 import React, { useState } from 'react';
+import { TextField, Button, Box, Typography, IconButton, useTheme } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Card from './Card';
 import { Column as ColumnType, Card as CardType } from '../types';
-import {
-  Box,
-  TextField,
-  Button,
-  Typography,
-  IconButton,
-  Divider
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
 
 type ColumnProps = {
   column: ColumnType;
@@ -19,8 +11,9 @@ type ColumnProps = {
 };
 
 const Column: React.FC<ColumnProps> = ({ column, columns, setColumns }) => {
+  const theme = useTheme();
   const [cardTitle, setCardTitle] = useState('');
-  const [cardLabel, setCardLabel] = useState('#ffffff'); // Default label color
+  const [cardLabel, setCardLabel] = useState('#ffffff');
 
   const deleteColumn = () => {
     setColumns(columns.filter((col) => col.id !== column.id));
@@ -33,51 +26,48 @@ const Column: React.FC<ColumnProps> = ({ column, columns, setColumns }) => {
         title: cardTitle,
         tasks: [],
         label: cardLabel,
-        dueDate: '', // Set as needed
+        dueDate: '',
       };
-
       const updatedColumns = columns.map((col) =>
         col.id === column.id ? { ...col, cards: [...col.cards, newCard] } : col
       );
-
       setColumns(updatedColumns);
       setCardTitle('');
-      setCardLabel('#ffffff'); // Reset to default color
+      setCardLabel('#ffffff');
     }
   };
 
   return (
-    <>
-      <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Typography variant="h6">{column.title}</Typography>
-        <IconButton color="error" onClick={deleteColumn}>
+    <div style={{width:"30rem"}}>
+      <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+        <Typography variant="h6" color="textPrimary">
+          {column.title}
+        </Typography>
+        <IconButton onClick={deleteColumn} color="error">
           <DeleteIcon />
         </IconButton>
       </Box>
 
-      <Divider sx={{ marginY: 1 }} />
-
-      <Box display="flex" alignItems="center" gap={1} marginBottom={2}>
+      <Box display="flex" gap={1} mb={2}>
         <TextField
-          label="New Card"
-          variant="outlined"
+          label="Card Title"
           value={cardTitle}
           onChange={(e) => setCardTitle(e.target.value)}
-          placeholder="Card name"
-          size="small"
+          variant="outlined"
           fullWidth
+          sx={{
+            backgroundColor: theme.palette.background.default,
+            '& .MuiOutlinedInput-root': {
+              color: theme.palette.text.primary,
+            },
+          }}
         />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={addCard}
-          startIcon={<AddIcon />}
-        >
+        <Button variant="contained" color="primary" onClick={addCard}>
           Add
         </Button>
       </Box>
 
-      <Box>
+      <Box display="flex" flexDirection="column" gap={1}>
         {column.cards && column.cards.length > 0 ? (
           column.cards.map((card) => (
             <Card
@@ -89,12 +79,12 @@ const Column: React.FC<ColumnProps> = ({ column, columns, setColumns }) => {
             />
           ))
         ) : (
-          <Typography color="textSecondary" variant="body2">
+          <Typography variant="body2" color="textSecondary">
             No cards available
           </Typography>
         )}
       </Box>
-    </>
+    </div>
   );
 };
 

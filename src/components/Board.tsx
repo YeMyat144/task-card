@@ -1,14 +1,7 @@
 import React, { useState } from 'react';
+import { Box, TextField, Button, useTheme } from '@mui/material';
 import Column from './Column';
 import { Column as ColumnType } from '../types';
-import {
-  Box,
-  TextField,
-  Button,
-  Grid,
-  Paper
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 
 type BoardProps = {
   columns: ColumnType[];
@@ -16,6 +9,7 @@ type BoardProps = {
 };
 
 const Board: React.FC<BoardProps> = ({ columns, setColumns }) => {
+  const theme = useTheme();
   const [newColumnName, setNewColumnName] = useState('');
 
   const addColumn = () => {
@@ -23,7 +17,7 @@ const Board: React.FC<BoardProps> = ({ columns, setColumns }) => {
       const newColumn: ColumnType = {
         id: Date.now().toString(),
         title: newColumnName,
-        cards: [], // Initialize cards as an empty array
+        cards: [],
       };
       setColumns([...columns, newColumn]);
       setNewColumnName('');
@@ -33,50 +27,52 @@ const Board: React.FC<BoardProps> = ({ columns, setColumns }) => {
   return (
     <Box
       sx={{
-        padding: 3,
-        backgroundColor: '#f5f5f5',
-        minHeight: '100vh',
+        padding: 2,
+        backgroundColor: theme.palette.background.default,
+        color: theme.palette.text.primary,
+        overflowX: 'hidden',
       }}
     >
 
-      <Box
-        display="flex"
-        alignItems="center"
-        gap={2}
-        sx={{ marginBottom: 3 }}
-      >
+      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', marginBottom: 2 }}>
         <TextField
-          label="New Column"
+          label="Column name"
           variant="outlined"
+          size="small"
           value={newColumnName}
           onChange={(e) => setNewColumnName(e.target.value)}
-          placeholder="Column name"
-          fullWidth
         />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={addColumn}
-          startIcon={<AddIcon />}
-          sx={{ height: 'fit-content', fontSize: '1.3rem' }}
-        >
-          Add
+        <Button variant="contained" onClick={addColumn}>
+          Add Column
         </Button>
       </Box>
 
-      <Grid container spacing={3}>
+      <Box
+        sx={{
+          display: 'flex',
+          overflowX: 'auto', // Allows horizontal scrolling
+          paddingBottom: 1,
+          scrollbarWidth: 'none', // Hide scrollbar for Firefox
+          '&::-webkit-scrollbar': { display: 'none' }, // Hide scrollbar for Chrome/Safari
+        }}
+      >
         {columns.map((column) => (
-          <Grid item key={column.id} xs={12} sm={6} md={4} lg={3}>
-            <Paper elevation={3} sx={{ padding: 2 }}>
-              <Column
-                column={column}
-                columns={columns}
-                setColumns={setColumns}
-              />
-            </Paper>
-          </Grid>
+          <Box
+            key={column.id}
+            sx={{
+              minWidth: '300px', // Set a fixed minimum width for columns
+              flexShrink: 0, // Prevents columns from shrinking
+              marginRight: 2, // Space between columns
+              border: `1px solid ${theme.palette.divider}`, // Add border
+              borderRadius: 2, // Optional: round corners of the column
+              backgroundColor: theme.palette.background.paper, // Background color for the column
+              padding: 1, // Inner padding for column content
+            }}
+          >
+            <Column column={column} columns={columns} setColumns={setColumns} />
+          </Box>
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 };

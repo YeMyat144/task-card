@@ -1,34 +1,36 @@
 import React from 'react';
 import { Task as TaskType } from '../types';
-import { Box, Typography, Checkbox, Paper } from '@mui/material';
+import { Box, Typography, Checkbox, Paper, useTheme } from '@mui/material';
 
 type TaskProps = {
   task: TaskType;
 };
 
 const Task: React.FC<TaskProps> = ({ task }) => {
+  const theme = useTheme();
+
   return (
-    <Paper 
+    <Paper
       elevation={1}
       sx={{
         display: 'flex',
         alignItems: 'center',
         padding: 1.5,
         marginY: 1,
-        backgroundColor: task.completed ? 'grey.100' : 'white',
-        borderLeft: `4px solid ${task.label || '#000'}`,  // Label color indicator
+        backgroundColor: theme.palette.background.paper,
+        borderLeft: `4px solid ${task.label || theme.palette.primary.main}`,
       }}
     >
       <Checkbox 
         checked={task.completed}
-        sx={{ color: task.label }}
+        sx={{ color: task.label || theme.palette.primary.main }}
         inputProps={{ 'aria-label': 'Task completion' }}
         disabled
       />
       <Box ml={1.5}>
-        <Typography 
+        <Typography
           variant="body1"
-          sx={{ textDecoration: task.completed ? 'line-through' : 'none' }}
+          sx={{ textDecoration: task.completed ? 'line-through' : 'none', color: theme.palette.text.primary }}
         >
           {task.title}
         </Typography>
