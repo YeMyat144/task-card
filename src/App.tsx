@@ -3,6 +3,7 @@ import { ThemeProvider, createTheme, CssBaseline, Box, Switch, Typography } from
 import Board from './components/Board';
 import { loadBoard, saveBoard } from './utils/localStorage';
 import { Column } from './types';
+import logo from './assets/logo1.png';
 
 const lightTheme = createTheme({
   palette: {
@@ -37,13 +38,20 @@ const App: React.FC = () => {
       <CssBaseline />
       <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2 }}>
-          <Typography variant="h4">Task Card</Typography>
+          {/* Logo and Title */}
+          <Box display="flex" alignItems="center">
+            <img src={logo} alt="Logo" style={{ width: 40, height: 40, marginRight: 8 }} /> {/* Logo image */}
+            <Typography variant="h4" color='#0079BF'>Task Card</Typography>
+          </Box>
+
+          {/* Dark Mode Toggle */}
           <Box display="flex" alignItems="center">
             <Typography variant="body1">Dark Mode</Typography>
             <Switch checked={isDarkMode} onChange={toggleTheme} />
           </Box>
         </Box>
 
+        {/* Board Container */}
         <Box
           sx={{
             overflowX: 'auto', 
