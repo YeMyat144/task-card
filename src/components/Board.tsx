@@ -27,13 +27,16 @@ const Board: React.FC<BoardProps> = ({ columns, setColumns }) => {
   return (
     <Box
       sx={{
+        display: 'flex',
+        flexDirection: 'column', 
         padding: 2,
+        gap: 2,
         backgroundColor: theme.palette.background.default,
         color: theme.palette.text.primary,
-        overflowX: 'hidden',
+        height: '100%',
       }}
     >
-
+      {/* Input for the new column name */}
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', marginBottom: 2 }}>
         <TextField
           label="Column name"
@@ -47,32 +50,65 @@ const Board: React.FC<BoardProps> = ({ columns, setColumns }) => {
         </Button>
       </Box>
 
+      {/* Container for columns */}
       <Box
-        sx={{
-          display: 'flex',
-          overflowX: 'auto', // Allows horizontal scrolling
-          paddingBottom: 1,
-          scrollbarWidth: 'none', // Hide scrollbar for Firefox
-          '&::-webkit-scrollbar': { display: 'none' }, // Hide scrollbar for Chrome/Safari
-        }}
-      >
-        {columns.map((column) => (
-          <Box
-            key={column.id}
-            sx={{
-              minWidth: '300px', // Set a fixed minimum width for columns
-              flexShrink: 0, // Prevents columns from shrinking
-              marginRight: 2, // Space between columns
-              border: `1px solid ${theme.palette.divider}`, // Add border
-              borderRadius: 2, // Optional: round corners of the column
-              backgroundColor: theme.palette.background.paper, // Background color for the column
-              padding: 1, // Inner padding for column content
-            }}
-          >
-            <Column column={column} columns={columns} setColumns={setColumns} />
-          </Box>
-        ))}
-      </Box>
+  sx={{
+    display: 'flex',
+    overflowX: 'auto',
+    gap: 2,
+    '&::-webkit-scrollbar': {
+      height: '8px',
+      borderRadius: '4px',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: theme.palette.primary.main,
+      borderRadius: '4px',
+      '&:hover': {
+        backgroundColor: theme.palette.primary.dark,
+      },
+      transition: 'background-color 0.2s ease',
+    },
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: theme.palette.grey[200],
+      borderRadius: '4px',
+    },
+  }}
+>
+  {columns.map((column) => (
+    <Box
+      key={column.id}
+      sx={{
+        minWidth: '300px',
+        flexShrink: 0,
+        height: '74vh',
+        overflowY: 'auto',
+        border: `1px solid ${theme.palette.grey[300]}`,
+        borderRadius: 2,
+        padding: 2,
+        backgroundColor: theme.palette.background.paper,
+        '&::-webkit-scrollbar': {
+          width: '8px',
+          borderRadius: '4px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: theme.palette.primary.main,
+          borderRadius: '4px',
+          '&:hover': {
+            backgroundColor: theme.palette.primary.dark,
+          },
+          transition: 'background-color 0.2s ease',
+        },
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: theme.palette.grey[200],
+          borderRadius: '4px',
+        },
+      }}
+    >
+      <Column column={column} columns={columns} setColumns={setColumns} />
+    </Box>
+  ))}
+</Box>
+
     </Box>
   );
 };

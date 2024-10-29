@@ -153,26 +153,16 @@ const Card: React.FC<CardProps> = ({ card, columnId, columns, setColumns }) => {
             }}
             fullWidth
           />
-          <TextField
-            label="Label Color"
-            type="color"
-            value={taskLabel}
-            onChange={(e) => setTaskLabel(e.target.value)}
-            fullWidth
-          />
           <Box display="flex" justifyContent="space-between" mt={1}>
             <Button variant="contained" color="primary" onClick={addTask}>
               Add Task
-            </Button>
-            <Button variant="outlined" onClick={resetTaskForm}>
-              Cancel
             </Button>
           </Box>
         </Box>
       )}
 
       <Button onClick={() => setShowTaskForm(!showTaskForm)} sx={{ mt: 2 }}>
-        {showTaskForm ? 'Hide Task Form' : 'Add New Task'}
+        {showTaskForm ? 'Cancel' : 'Add New Task'}
       </Button>
 
       <Box mt={2}>
