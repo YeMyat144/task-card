@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import CloseIcon from '@mui/icons-material/Close';
 import Card from './Card';
 import { Column as ColumnType, Card as CardType } from '../types';
 
@@ -41,7 +41,7 @@ const Column: React.FC<ColumnProps> = ({ column, columns, setColumns }) => {
       <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
         <Typography variant="h6">{column.title}</Typography>
         <IconButton onClick={deleteColumn} color="error">
-          <DeleteIcon />
+          <CloseIcon />
         </IconButton>
       </Box>
 

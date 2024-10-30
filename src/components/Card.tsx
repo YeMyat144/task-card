@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Typography, IconButton, Paper, Button, Checkbox, TextField, useTheme } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 import { Card as CardType, Column as ColumnType, Task as TaskType } from '../types';
 
 type CardProps = {
@@ -191,7 +192,7 @@ const Card: React.FC<CardProps> = ({ card, columnId, columns, setColumns }) => {
               </Typography>
             </Box>
             <IconButton onClick={() => deleteTask(task.id)} color="error">
-              <DeleteIcon />
+              <HorizontalRuleIcon />
             </IconButton>
           </Box>
         ))}
