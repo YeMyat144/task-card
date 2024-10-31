@@ -53,4 +53,4 @@ A simplified dashboard built with React, TypeScript, and Local Storage. This pro
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/trello-clone.git
+   git clone https://github.com/yemyat144/trello-clone.git
