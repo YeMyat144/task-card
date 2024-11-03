@@ -1,50 +1,56 @@
-# React + TypeScript + Vite
+# Task Card
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simplified dashboard built with React, TypeScript, and Local Storage. This project allows users to create and manage task boards with customizable columns and draggable task cards, offering a practical tool for task organization. Each task card supports titles, descriptions, due dates, and color-coded labels. This clone includes light/dark mode, responsive design, and smooth user interactions.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+### Board Management
+- **Create, delete, and rename boards** for better organization.
+- **Customizable backgrounds and labels** for easy board identification.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Column and Task Management
+- **Add, edit, and delete columns** within each board.
+- **Organize tasks in columns** with fields like title, description, due date, and color-coded labels.
+- **Mark tasks as complete** with visual indications to track progress.
 
-- Configure the top-level `parserOptions` property like this:
+### Drag-and-Drop Functionality
+- **Rearrange columns and tasks** using drag-and-drop for flexible task organization.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Data Persistence
+- **Store board and task data in Local Storage** to maintain workspaces between sessions.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Theming and User Experience
+- **Light and dark mode** for improved accessibility.
+- **Responsive layout** adapts to various screen sizes.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Advanced Features (Future Enhancements)
+- **Filter tasks** by labels, due dates, or completion status.
+- **Enhanced styling and animations** for a seamless user experience.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+---
+
+## Tech Stack
+
+- **Frontend**: React, TypeScript, Material-UI (optional for styling)
+- **Data Storage**: Local Storage for client-side data persistence
+
+---
+
+## Goals
+
+- **Provide a hands-on task management tool** with essential features inspired by Trello.
+- **Demonstrate skills in state management, component design**, and **user-friendly interactions** using React and TypeScript.
+
+---
+
+## Getting Started
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed on your machine.
+
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yemyat144/trello-clone.git
