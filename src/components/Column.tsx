@@ -55,7 +55,7 @@ const Column: React.FC<ColumnProps> = ({ column, columns, setColumns }) => {
           size="small"
         />
         <Button variant="contained" color="primary" onClick={addCard}>
-          Add
+          +
         </Button>
       </Box>
 

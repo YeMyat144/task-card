@@ -37,16 +37,17 @@ const Board: React.FC<BoardProps> = ({ columns, setColumns }) => {
       }}
     >
       {/* Input for the new column name */}
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', marginBottom: 2 }}>
+      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', marginBottom: 2}}>
         <TextField
-          label="Column name"
+          label="Name"
           variant="outlined"
           size="small"
           value={newColumnName}
           onChange={(e) => setNewColumnName(e.target.value)}
+          fullWidth
         />
-        <Button variant="contained" onClick={addColumn}>
-          Add Column
+        <Button variant="contained" onClick={addColumn} sx={{ minWidth: '100px' }}>
+          Add
         </Button>
       </Box>
 
@@ -78,7 +79,7 @@ const Board: React.FC<BoardProps> = ({ columns, setColumns }) => {
     <Box
       key={column.id}
       sx={{
-        minWidth: '300px',
+        minWidth: '400px',
         flexShrink: 0,
         height: '74vh',
         overflowY: 'auto',
