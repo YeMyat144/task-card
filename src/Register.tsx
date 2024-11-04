@@ -4,21 +4,35 @@ import { useNavigate } from 'react-router-dom';
 
 const Register: React.FC = () => {
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleRegister = () => {
-    // Implement your registration logic here
-    console.log("Registering with", email, password);
-    // Navigate to the login page after registration
-    navigate('/login');
+    if (email && name && password) {
+      // Save the user details to localStorage
+      localStorage.setItem('userEmail', email);
+      localStorage.setItem('userName', name);
+      localStorage.setItem('userPassword', password);
+      setError('');
+      navigate('/login'); // Redirect to login after registration
+    } else {
+      setError('All fields are required');
+    }
   };
 
   return (
     <Container>
     <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
       <Typography variant="h5">Register</Typography>
+      <TextField
+        label="Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        fullWidth
+        margin="normal"
+      />
       <TextField
         label="Email"
         type="email"
@@ -35,14 +49,11 @@ const Register: React.FC = () => {
         fullWidth
         margin="normal"
       />
-      <TextField
-        label="Confirm Password"
-        type="password"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        fullWidth
-        margin="normal"
-      />
+      {error && (
+        <Typography color="error" variant="body2">
+          {error}
+        </Typography>
+      )}
       <Button variant="contained" color="primary" onClick={handleRegister} sx={{ mt: 2 }}>
         Register
       </Button>

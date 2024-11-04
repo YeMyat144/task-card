@@ -1,3 +1,4 @@
+// Login.tsx
 import React, { useState } from 'react';
 import { Container, Box, Button, TextField, Typography, Link } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -5,13 +6,19 @@ import { useNavigate } from 'react-router-dom';
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    // Implement your login logic here
-    console.log("Logging in with", email, password);
-    // Navigate to the board after login
-    navigate('/');
+    const storedEmail = localStorage.getItem('userEmail');
+    const storedPassword = localStorage.getItem('userPassword');
+
+    if (email === storedEmail && password === storedPassword) {
+      setError('');
+      navigate('/board'); // Redirect to the main board after login
+    } else {
+      setError('Invalid email or password.');
+    }
   };
 
   return (
@@ -34,6 +41,11 @@ const Login: React.FC = () => {
         fullWidth
         margin="normal"
       />
+      {error && (
+        <Typography color="error" variant="body2">
+          {error}
+        </Typography>
+      )}
       <Button variant="contained" color="primary" onClick={handleLogin} sx={{ mt: 2 }}>
         Login
       </Button>
