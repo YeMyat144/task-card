@@ -3,7 +3,6 @@ import { ThemeProvider, createTheme, CssBaseline, Box, Typography, IconButton } 
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Board from './components/Board';
 import Login from './Login';
-import Register from './Register';
 import { loadBoard, saveBoard } from './utils/localStorage';
 import { Column } from './types';
 import logo from './assets/logo2.png';
@@ -60,7 +59,6 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<Navigate to="/login" replace />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
               <Route path="/board" element={<Board columns={columns} setColumns={setColumns} />} />
             </Routes>
           </Box>
