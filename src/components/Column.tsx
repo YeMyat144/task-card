@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, IconButton, Menu, MenuItem } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -107,7 +107,7 @@ const Column: React.FC<ColumnProps> = ({ column, columns, setColumns }) => {
               handleMenuClose();
             }}
           >
-            <CloseIcon style={{ marginRight: '8px' }}/> Delete Column
+            <DeleteIcon style={{ marginRight: '8px' }}/> Delete Column
           </MenuItem>
         </Menu>
       </Box>
