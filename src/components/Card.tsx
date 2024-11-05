@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Typography, IconButton, Paper, Button, Checkbox, TextField, useTheme } from '@mui/material';
+import { Box, Typography, IconButton, Paper, Button, Checkbox, TextField, useTheme, Menu, MenuItem } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import CheckIcon from '@mui/icons-material/Check';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 import { Card as CardType, Column as ColumnType, Task as TaskType } from '../types';
 
@@ -18,6 +21,9 @@ const Card: React.FC<CardProps> = ({ card, columnId, columns, setColumns }) => {
   const [taskDescription, setTaskDescription] = useState('');
   const [taskDueDate, setTaskDueDate] = useState('');
   const [taskLabel, setTaskLabel] = useState('#ffffff');
+  const [isEditingCard, setIsEditingCard] = useState(false);
+  const [cardTitle, setCardTitle] = useState(card.title);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const addTask = () => {
     if (taskTitle.trim()) {
@@ -56,12 +62,10 @@ const Card: React.FC<CardProps> = ({ card, columnId, columns, setColumns }) => {
 
   const deleteCard = () => {
     const updatedColumns = columns.map((col) =>
-      col.id === columnId
-        ? { ...col, cards: col.cards.filter(c => c.id !== card.id) }
-        : col
+      col.id === columnId ? { ...col, cards: col.cards.filter(c => c.id !== card.id) } : col
     );
-
     setColumns(updatedColumns);
+    setAnchorEl(null); // Close the menu
   };
 
   const deleteTask = (taskId: string) => {
@@ -69,15 +73,12 @@ const Card: React.FC<CardProps> = ({ card, columnId, columns, setColumns }) => {
       col.id === columnId
         ? {
             ...col,
-            cards: col.cards.map(c =>
-              c.id === card.id
-                ? { ...c, tasks: c.tasks.filter(task => task.id !== taskId) }
-                : c
+            cards: col.cards.map((c) =>
+              c.id === card.id ? { ...c, tasks: c.tasks.filter((task) => task.id !== taskId) } : c
             ),
           }
         : col
     );
-
     setColumns(updatedColumns);
   };
 
@@ -86,24 +87,44 @@ const Card: React.FC<CardProps> = ({ card, columnId, columns, setColumns }) => {
       col.id === columnId
         ? {
             ...col,
-            cards: col.cards.map(c =>
+            cards: col.cards.map((c) =>
               c.id === card.id
                 ? {
                     ...c,
-                    tasks: c.tasks.map(t =>
-                      t.id === taskId ? { ...t, completed: !t.completed } : t
-                    ),
+                    tasks: c.tasks.map((t) => (t.id === taskId ? { ...t, completed: !t.completed } : t)),
                   }
                 : c
             ),
           }
         : col
     );
-
     setColumns(updatedColumns);
   };
 
+  const saveCardTitle = () => {
+    const updatedColumns = columns.map((col) =>
+      col.id === columnId
+        ? {
+            ...col,
+            cards: col.cards.map((c) => (c.id === card.id ? { ...c, title: cardTitle } : c)),
+          }
+        : col
+    );
+
+    setColumns(updatedColumns);
+    setIsEditingCard(false);
+    setAnchorEl(null); // Close the menu
+  };
+
   const completedTasks = card.tasks.filter((task) => task.completed).length;
+
+  const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Paper
@@ -116,12 +137,44 @@ const Card: React.FC<CardProps> = ({ card, columnId, columns, setColumns }) => {
       }}
     >
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-        <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
-          {card.title}
-        </Typography>
-        <IconButton onClick={deleteCard} color="error">
-          <DeleteIcon />
+        <Box display="flex" alignItems="center" gap={1}>
+          {isEditingCard ? (
+            <TextField
+              value={cardTitle}
+              onChange={(e) => setCardTitle(e.target.value)}
+              size="small"
+              variant="outlined"
+              autoFocus
+            />
+          ) : (
+            <Typography variant="h6" sx={{ color: theme.palette.text.primary }}>
+              {card.title}
+            </Typography>
+          )}
+        </Box>
+
+        <IconButton onClick={handleMenuClick} color="primary">
+          <MoreHorizIcon />
         </IconButton>
+
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
+          {isEditingCard ? (
+            <MenuItem onClick={saveCardTitle}>
+              <CheckIcon style={{ marginRight: '8px' }}/> Save Name
+            </MenuItem>
+          ) : (
+            <MenuItem onClick={() => { setIsEditingCard(true); handleMenuClose(); }}>
+              <EditIcon style={{ marginRight: '8px' }}/> Edit Name
+            </MenuItem>
+          )}
+          <MenuItem onClick={deleteCard}>
+            <DeleteIcon style={{ marginRight: '8px' }}/> Delete Card
+          </MenuItem>
+        </Menu>
       </Box>
       <Typography variant="body2" color="textSecondary">
         {completedTasks} / {card.tasks.length} Tasks Completed
@@ -149,9 +202,7 @@ const Card: React.FC<CardProps> = ({ card, columnId, columns, setColumns }) => {
             type="date"
             value={taskDueDate}
             onChange={(e) => setTaskDueDate(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-            }}
+            InputLabelProps={{ shrink: true }}
             fullWidth
           />
           <Box display="flex" justifyContent="space-between" mt={1}>
