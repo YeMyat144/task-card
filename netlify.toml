@@ -1,7 +1,6 @@
 [build]
-  command = "npm run build"
-  publish = "/build"
-  base = "/"
+  publish = "build" # Adjust if your build folder is named differently, like "dist"
+  command = "npm run build" # Or "yarn build" if you're using Yarn
 
 [[redirects]]
   from = "/*"
